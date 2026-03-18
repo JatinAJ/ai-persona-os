@@ -1,0 +1,10 @@
+{
+  "hooks": {
+    "SessionEnd": [
+      {
+        "cmd": "decision-logger",
+        "prompt": "Review this conversation and extract any decisions made. For each decision:\n\n### [Decision Title]\n**Decision:** [what was decided]\n**Rationale:** [why]\n**Status:** [Implemented | Pending | Deferred]\n\nAppend to memory/decisions/2026-03.md under today's date (create section if needed). If no decisions were made, skip silently."
+      }
+    ]
+  }
+}
