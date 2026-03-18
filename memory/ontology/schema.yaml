@@ -1,0 +1,76 @@
+types:
+  Person:
+    required: [name]
+    properties: [name, email, phone, notes, role, timezone]
+
+  Organization:
+    required: [name]
+    properties: [name, type, members, description]
+
+  Project:
+    required: [name, status]
+    properties: [name, status, goals, owner, description]
+    status_enum: [planning, active, on_hold, completed, archived]
+
+  Task:
+    required: [title, status]
+    properties: [title, status, due, priority, assignee, blockers, description]
+    status_enum: [open, in_progress, blocked, done]
+
+  Goal:
+    required: [description]
+    properties: [description, target_date, metrics, owner]
+
+  Event:
+    required: [title, start]
+    properties: [title, start, end, location, attendees, recurrence]
+    validate: "end >= start if end exists"
+
+  Document:
+    required: [title]
+    properties: [title, path, url, summary]
+
+  Note:
+    required: [content]
+    properties: [content, tags, refs]
+
+  Business:
+    required: [name, founder]
+    properties: [name, founder, description, revenue_model, team, challenges, goals]
+
+relations:
+  has_owner:
+    from_types: [Project, Task, Goal]
+    to_types: [Person]
+    cardinality: many_to_one
+
+  works_for:
+    from_types: [Person]
+    to_types: [Organization, Business]
+    cardinality: many_to_one
+
+  has_task:
+    from_types: [Project]
+    to_types: [Task]
+    cardinality: one_to_many
+
+  blocks:
+    from_types: [Task]
+    to_types: [Task]
+    cardinality: many_to_many
+    acyclic: true
+
+  founded:
+    from_types: [Person]
+    to_types: [Business]
+    cardinality: one_to_many
+
+  member_of:
+    from_types: [Person]
+    to_types: [Organization]
+    cardinality: many_to_many
+
+  related_to:
+    from_types: [Person, Project, Task, Goal, Event, Document, Note, Business]
+    to_types: [Person, Project, Task, Goal, Event, Document, Note, Business]
+    cardinality: many_to_many
